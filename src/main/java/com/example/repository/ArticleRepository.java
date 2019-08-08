@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Article;
 
 /**
- * 掲示板を操作するリポジトリ.
+ * 記事を操作するリポジトリ.
  * 
  * @author ayaka.yamade
  *
@@ -42,6 +44,17 @@ public class ArticleRepository {
 		String sql = "SELECT id, name, content FROM articles ORDER BY id";
 		List<Article> articleList = template.query(sql, ARTICLE_ROW_MAPPER);
 		return articleList;
+	}
+	
+	/**
+	 * 記事を更新する.
+	 * 
+	 * @param article 記事
+	 */
+	public void insert(Article article) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(article);
+		String sql = "INSERT INTO articles(name,content) VALUES(:name,:content)";
+		template.update(sql, param);
 	}
 
 }

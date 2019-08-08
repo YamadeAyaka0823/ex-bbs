@@ -2,7 +2,7 @@ package com.example.domain;
 
 import java.util.List;
 /**
- * 記事一覧情報を表すドメイン.
+ * 記事情報を表すドメイン.
  * 
  * @author ayaka.yamade
  *
