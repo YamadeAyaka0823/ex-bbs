@@ -22,6 +22,9 @@ public class ArticleRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 	
+	/**
+	 * Articleオブジェクトを生成するローマッパー.
+	 */
 	private static final RowMapper<Article> ARTICLE_ROW_MAPPER = (rs,i) -> {
 		Article article = new Article();
 		article.setId(rs.getInt("id"));
