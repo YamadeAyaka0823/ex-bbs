@@ -1,5 +1,6 @@
 package com.example.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -9,8 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
+import com.example.domain.Comment;
 import com.example.form.ArticleForm;
+import com.example.form.CommentForm;
 import com.example.repository.ArticleRepository;
+import com.example.repository.CommentRepository;
 /**
  * 記事関連の処理を行うコントローラ.
  * 
@@ -24,6 +28,9 @@ public class ArticleController {
 	@Autowired
 	private ArticleRepository articleRepository;
 	
+	@Autowired
+	private CommentRepository commentRepository;
+	
 	
 	/**
 	 * 記事一覧.
@@ -33,6 +40,10 @@ public class ArticleController {
 	@RequestMapping("/showList")
 	public String showList(Model model) {
 		List<Article> articleList = articleRepository.findAll();
+		for(Article article : articleList) {
+			List<Comment> commentList = commentRepository.findByArticleId(article.getId());
+			article.setCommentList(commentList);
+		}
 		model.addAttribute("articleList", articleList);
 		return "list";
 	}
@@ -49,5 +60,21 @@ public class ArticleController {
 		articleRepository.insert(article);
 		return "forward:/article/showList";
 	}
+	/**
+	 * コメント追加.
+	 * @param form リクエストパラメーターが入ったフォーム
+	 * @return 初期画面
+	 */
+	@RequestMapping("insert_comment")
+	public String insertComment(CommentForm form) {
+		System.out.println(form);
+		Comment comment = new Comment();
+		comment.setArticleId(form.getIntArticleId());
+		BeanUtils.copyProperties(form, comment);
+		commentRepository.insert(comment);
+		return "forward:/article/showList";
+	}
+	
+	
 
 }

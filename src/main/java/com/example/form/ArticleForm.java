@@ -1,6 +1,6 @@
 package com.example.form;
 /**
- * 記事一覧情報を表すフォーム.
+ * 記事情報を表すフォーム.
  * 
  * @author ayaka.yamade
  *
