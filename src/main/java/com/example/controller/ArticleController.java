@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
@@ -30,6 +31,11 @@ public class ArticleController {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@ModelAttribute
+	public CommentForm setUpForm() {
+		return new CommentForm();
+	}
 	
 	
 	/**
@@ -74,7 +80,18 @@ public class ArticleController {
 		commentRepository.insert(comment);
 		return "forward:/article/showList";
 	}
-	
+	/**
+	 * コメント削除.
+	 * @param form リクエストパラメーターが入ったフォーム
+	 * @return 初期画面
+	 */
+	@RequestMapping("delete_article")
+	public String deleteArticle(CommentForm form) {
+		
+	  commentRepository.deleteByArticleId(form.getIntArticleId());
+	  articleRepository.deleteById(form.getIntArticleId());
+	  return "forward:/article/showList";
 	
 
+}
 }

@@ -16,6 +16,10 @@
 投稿者ID:<span th:text="${article.id}"></span><br>
 投稿者名:<span th:text="${article.name}"></span><br>
 投稿内容:<span th:text="${article.content}"></span><br>
+<form th:action="@{/article/delete_article/}" method="post" th:object="${commentForm}">
+<input type="hidden" name="articleId" th:value="${article.id}">
+<button>投稿削除</button>
+</form>
 
 
 <span th:each="comment:${article.commentList}">
